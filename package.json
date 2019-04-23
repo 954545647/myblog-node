@@ -1,0 +1,30 @@
+{
+  "name": "myblog-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/954545647/myblog-node.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/954545647/myblog-node/issues"
+  },
+  "homepage": "https://github.com/954545647/myblog-node#readme",
+  "devDependencies": {
+    "art-template": "^4.13.2",
+    "koa-art-template": "^1.1.1",
+    "koa-bodyparser": "^4.2.1",
+    "nodemailer": "^6.1.1"
+  },
+  "dependencies": {
+    "koa": "^2.7.0",
+    "koa-router": "^7.4.0",
+    "koa2-cors": "^2.0.6"
+  }
+}
