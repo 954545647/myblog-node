@@ -20,9 +20,9 @@ let filePath = path.resolve(__dirname, "./../views/mail.html");
 const html = template(filePath,{
   code: '988575'
 });
-
+let userMail
 router.post("/register", async ctx => {
-  let userMail = ctx.request.body.email;
+  userMail = ctx.request.body.email;
   console.log(userMail);
   let transporter = nodemailer.createTransport({
     // host: 'smtp.ethereal.email',
@@ -30,7 +30,7 @@ router.post("/register", async ctx => {
     port: 465, // SMTP 端口
     secureConnection: true, // 使用了 SSL
     auth: {
-      user: `${userMail}`,
+      user: '954545647@qq.com',
       // 这里密码不是qq密码，是你设置的smtp授权码
       pass: "cdixterherclbbfb"
     }
@@ -38,7 +38,7 @@ router.post("/register", async ctx => {
 
   let mailOptions = {
     from: '"注册邮件" <954545647@qq.com>', // sender address
-    to: "954545647@qq.com", // list of receivers
+    to: `${userMail}`, // list of receivers
     subject: "验证码服务", // Subject line
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
