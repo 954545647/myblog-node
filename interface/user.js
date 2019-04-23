@@ -18,7 +18,7 @@ render(app, {
 router.prefix("/user");
 let filePath = path.resolve(__dirname, "./../views/mail.html");
 const html = template(filePath,{
-  code: '666'
+  code: '988575'
 });
 
 router.post("/register", async ctx => {
@@ -37,9 +37,9 @@ router.post("/register", async ctx => {
   });
 
   let mailOptions = {
-    from: '"认证邮件" <954545647@qq.com>', // sender address
+    from: '"注册邮件" <954545647@qq.com>', // sender address
     to: "954545647@qq.com", // list of receivers
-    subject: "Hello", // Subject line
+    subject: "验证码服务", // Subject line
     // 发送text或者html格式
     // text: 'Hello world?', // plain text body
     // html: '<b>Hello world?</b>' // html body

@@ -17,7 +17,7 @@ app.use(cors());
 
 router.get('/',async(ctx)=>{
   ctx.body='这是首页';
-  await ctx.render('mail');
+  await ctx.render('index');
 })
 
 app.use(user.routes()).use(user.allowedMethods());  //用户路由
