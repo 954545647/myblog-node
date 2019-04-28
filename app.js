@@ -8,7 +8,8 @@ app.use(cors());
 const bodyParser = require("koa-bodyparser"); //解析post请求数据
 app.use(bodyParser());
 
-const user = require("./interface/user.js"); //模块化路由
+const user = require("./interface/user.js"); //用户路由
+const home = require("./interface/home.js"); // 首页路由
 const render = require("koa-art-template"); // art-template模版引擎
 const path = require("path");
 
@@ -33,19 +34,20 @@ mongoose.connect(
     }
   }
 );
-const Redis = require("ioredis");
+const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
 router.get("/", async ctx => {
   ctx.body = "这是首页";
-  let data = await User.find({email: '123@qq.com'});
-  console.log(data)
+  let data = await User.find({ email: "123@qq.com" });
+  console.log(data);
 });
 router.get("/user", async ctx => {
   ctx.body = "这是user";
 });
 
 app.use(user.routes()).use(user.allowedMethods()); //用户路由
+app.use(home.routes()).use(home.allowedMethods()); //用户路由
 app
   .use(router.routes()) // 启动路由
   .use(router.allowedMethods());

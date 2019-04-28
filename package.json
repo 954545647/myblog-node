@@ -18,6 +18,7 @@
   "homepage": "https://github.com/954545647/myblog-node#readme",
   "devDependencies": {
     "art-template": "^4.13.2",
+    "axios": "^0.18.0",
     "ioredis": "^4.9.0",
     "koa-art-template": "^1.1.1",
     "koa-bodyparser": "^4.2.1",

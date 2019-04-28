@@ -1,12 +1,16 @@
 const env = require("./env.js");
-let dbs, redisUrl
+let dbs;  // 数据库连接地址
+let redisUrl; // redis连接地址
+let musicData;  // 音乐数据nginx地址
 // 上线模式
 if (env === "dev") {
   dbs = "mongodb://127.0.0.1:27017/blog";
-  redisUrl = '127.0.0.1'
+  redisUrl = '47.105.52.134';
+  musicData = 'http://127.0.0.1:8081';
 } else if (env === "prod") {
   dbs = "mongodb://47.105.52.134:27017/blog";
-  redisUrl = '47.105.52.134'
+  redisUrl = '47.105.52.134';
+  musicData = 'http://47.105.52.134:80'
 }
 let redisConf = {
   host: redisUrl, //安装好的redis服务器地址
@@ -18,5 +22,6 @@ let redisConf = {
 module.exports = {
   dbs,
   redisUrl,
-  redisConf
+  redisConf,
+  musicData
 };

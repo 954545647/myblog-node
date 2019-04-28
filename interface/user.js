@@ -117,7 +117,6 @@ router.post("/register", async ctx => {
   }
   // 校验验证码
   let num = await redis.get(email); // 从redis中获取用户填写邮箱时发送的验证码
-  console.log(num)
   // 如果用户填写的验证码和redis存储的一致的话就通过验证
   if (!num) {
     ctx.body = {
