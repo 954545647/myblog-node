@@ -14,9 +14,9 @@ router.get("/music", async ctx => {
   let name = ctx.query.name;
   try {
     let result;
-    await axios.get(`${Config.musicData}/music/music.json`).then((res)=>{
-      result = res.data
-    })
+    await axios.get(`${Config.musicData}/music/music.json`).then(res => {
+      result = res.data;
+    });
     ctx.body = {
       status: 200,
       result
@@ -28,11 +28,26 @@ router.get("/music", async ctx => {
   }
 });
 
-router.get('/getLyric',async ctx=>{
-  console.log(ctx.request.query['lyric[]'])
-  axios.all('')
-  ctx.body={
-    status:200
+router.get("/getLyric", async ctx => {
+  let lyricList = ctx.request.query["lyric[]"];
+  let lyricData = [];
+  for (var i = 0; i < lyricList.length; i++) {
+    let url = encodeURI(lyricList[i]);
+    await axios.get(`${url}`).then(res => {
+      lyricData.push(res.data);
+    });
   }
-})
+  if (lyricData.length > 1) {
+    ctx.body = {
+      code: 0,
+      lyricData
+    };
+  } else {
+    ctx.body = {
+      code: 1,
+      lyricData:[]
+    };
+  }
+});
+
 module.exports = router;

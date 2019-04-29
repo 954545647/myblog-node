@@ -6,7 +6,7 @@ let musicData;  // 音乐数据nginx地址
 if (env === "dev") {
   dbs = "mongodb://127.0.0.1:27017/blog";
   redisUrl = '47.105.52.134';
-  musicData = 'http://127.0.0.1:8081';
+  musicData = 'http://47.105.52.134:80';
 } else if (env === "prod") {
   dbs = "mongodb://47.105.52.134:27017/blog";
   redisUrl = '47.105.52.134';
