@@ -14,6 +14,7 @@ router.get("/music", async ctx => {
   let name = ctx.query.name;
   try {
     let result;
+    // 发起请求,去获取json文件的地址
     await axios.get(`${Config.musicData}/music/music.json`).then(res => {
       result = res.data;
     });
@@ -29,23 +30,58 @@ router.get("/music", async ctx => {
 });
 
 router.get("/getLyric", async ctx => {
+  // 服务器上的歌词链接组成的数组
   let lyricList = ctx.request.query["lyric[]"];
   let lyricData = [];
+  let times = []; // 歌词的时间
+  let lyric = []; // 纯歌词数据
+  let timesResult = []; //存放每首歌的时间
+  let lyricResult = []; //存放每首歌的歌词
+  const timeReg = /\[(\d*:\d*\.\d*)\]/;
   for (var i = 0; i < lyricList.length; i++) {
     let url = encodeURI(lyricList[i]);
     await axios.get(`${url}`).then(res => {
+      let data = res.data.split("\n"); //[00:00.24]与我常在 - 陈奕迅
+      data.forEach((item, index) => {
+        // 获取相应的歌词
+        let lrc = item.split("]")[1];
+        // 剔除空字符串
+        if (!lrc || lrc.length === 1 || lrc === undefined) return true;
+        lyric.push(lrc);
+        // 要把每段歌词的时间转换成秒数
+        let res = timeReg.exec(item);
+        if (res == null) return true;
+        let timeStr = res[1];
+        var timeStr2 = timeStr.split(":");
+        let min = parseInt(timeStr2[0]) * 60;
+        let sec = parseFloat(timeStr2[1]);
+        let time = parseFloat(Number(min + sec).toFixed(2));
+        times.push(time);
+      });
+      // 这是所有数据
       lyricData.push(res.data);
     });
+    // 这是时间数据
+    timesResult.push(times);
+    // 歌词数据
+    lyricResult.push(lyric);
+    // 每次遍历完之后都要把 times和lyric清空,不然叠加了
+    times = [];
+    lyric = [];
   }
   if (lyricData.length > 1) {
     ctx.body = {
       code: 0,
-      lyricData
+      lyricData,
+      lyricResult,
+      timesResult
     };
   } else {
     ctx.body = {
       code: 1,
-      lyricData:[]
+      lyricData: [],
+      lyricResult:[],
+      timesResult:[]
     };
   }
 });
