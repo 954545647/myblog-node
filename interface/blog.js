@@ -27,6 +27,7 @@ var upload = multer({
 
 router.post("/upload", upload.single("file"), async (ctx, next) => {
   let file = ctx.req.file;
+  console.log( config.imgUrl + "/" + ctx.req.file.filename)
   ctx.body = {
     filename: file.filename,
     url: config.imgUrl + "/" + ctx.req.file.filename
