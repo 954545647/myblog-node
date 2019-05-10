@@ -5,11 +5,9 @@ const app = new koa();
 const router = require("koa-router")();
 router.prefix("/blog");
 const path = require("path");
-const fs = require("fs");
-
+const config = require("./../config/config");
 const multer = require("koa-multer");
-const static = require("koa-static");
-app.use(require('koa-static')('./../uploads'));
+app.use(require("koa-static")("./../uploads"));
 //配置
 var storage = multer.diskStorage({
   //文件保存路径
@@ -27,12 +25,11 @@ var upload = multer({
   storage: storage
 });
 
-router.post("/upload", upload.single('file'),async (ctx, next) => {
-  let file = ctx.req.file ;
+router.post("/upload", upload.single("file"), async (ctx, next) => {
+  let file = ctx.req.file;
   ctx.body = {
     filename: file.filename,
-    url: 'http://127.0.0.1:3000/' + ctx.req.file.filename
+    url: config.imgUrl + "/" + ctx.req.file.filename
   };
 });
-
 module.exports = router;

@@ -7,10 +7,12 @@ if (env === "dev") {
   dbs = "mongodb://127.0.0.1:27017/blog";
   redisUrl = '127.0.0.1';
   musicData = 'http://47.105.52.134:80';
+  imgUrl = 'http://127.0.0.1:3000';
 } else if (env === "prod") {
   dbs = "mongodb://47.105.52.134:27017/blog";
   redisUrl = '47.105.52.134';
-  musicData = 'http://47.105.52.134:80'
+  musicData = 'http://47.105.52.134:80';
+  imgUrl = 'http://47.105.52.134:80';
 }
 let redisConf = {
   host: redisUrl, //安装好的redis服务器地址
@@ -23,5 +25,6 @@ module.exports = {
   dbs,
   redisUrl,
   redisConf,
-  musicData
+  musicData,
+  imgUrl
 };
