@@ -8,10 +8,16 @@ app.use(cors());
 const bodyParser = require("koa-bodyparser"); //解析post请求数据
 app.use(bodyParser());
 
+// 配置静态资源服务器
+const path = require("path");
+const static = require("koa-static");
+const staticPath = './uploads'
+app.use(static(path.join(__dirname, staticPath)));
+
 const user = require("./interface/user.js"); //用户路由
 const home = require("./interface/home.js"); // 首页路由
+const blog = require("./interface/blog.js"); // 首页路由
 const render = require("koa-art-template"); // art-template模版引擎
-const path = require("path");
 
 const CONFIG = require("./config/session.js"); // session的默认配置
 var session = require("koa-generic-session"); // 这个是帮助koa解析cookie
@@ -39,15 +45,14 @@ const redis = new Redis(Config.redisConf);
 
 router.get("/", async ctx => {
   ctx.body = "这是首页";
-  let data = await User.find({ email: "123@qq.com" });
-  console.log(data);
 });
 router.get("/user", async ctx => {
   ctx.body = "这是user";
 });
 
 app.use(user.routes()).use(user.allowedMethods()); //用户路由
-app.use(home.routes()).use(home.allowedMethods()); //用户路由
+app.use(home.routes()).use(home.allowedMethods()); //首页路由
+app.use(blog.routes()).use(blog.allowedMethods()); //博客路由
 app
   .use(router.routes()) // 启动路由
   .use(router.allowedMethods());

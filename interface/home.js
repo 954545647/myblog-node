@@ -11,7 +11,6 @@ app.use(bodyParser());
 router.prefix("/home");
 
 router.get("/music", async ctx => {
-  let name = ctx.query.name;
   try {
     let result;
     // 发起请求,去获取json文件的地址
