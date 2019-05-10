@@ -12,7 +12,9 @@ app.use(bodyParser());
 const path = require("path");
 const static = require("koa-static");
 const staticPath = './uploads'
+console.log(('./uploads'))
 app.use(static(path.join(__dirname, staticPath)));
+app.use(static('uploads'));
 
 const user = require("./interface/user.js"); //用户路由
 const home = require("./interface/home.js"); // 首页路由
