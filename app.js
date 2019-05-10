@@ -38,7 +38,7 @@ mongoose.connect(
     if (err) {
       console.log(err);
     } else {
-      console.log("数据库连接成功");
+      console.log("数据库连接成功!");
     }
   }
 );
