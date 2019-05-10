@@ -12,7 +12,7 @@ if (env === "dev") {
   dbs = "mongodb://47.105.52.134:27017/blog";
   redisUrl = '47.105.52.134';
   musicData = 'http://47.105.52.134:80';
-  imgUrl = 'http://47.105.52.134:80';
+  imgUrl = 'http://47.105.52.134:3000';
 }
 let redisConf = {
   host: redisUrl, //安装好的redis服务器地址
