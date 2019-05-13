@@ -10,6 +10,7 @@ const bodyParser = require("koa-bodyparser");
 app.use(bodyParser());
 router.prefix("/home");
 
+// 获取音乐数据接口(music.json文件)
 router.get("/music", async ctx => {
   try {
     let result;
@@ -28,6 +29,7 @@ router.get("/music", async ctx => {
   }
 });
 
+// 获取歌词接口
 router.get("/getLyric", async ctx => {
   // 服务器上的歌词链接组成的数组
   let lyricList = ctx.request.query["lyric[]"];

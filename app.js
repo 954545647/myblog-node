@@ -12,7 +12,6 @@ app.use(bodyParser());
 const path = require("path");
 const static = require("koa-static");
 const staticPath = './uploads'
-console.log(('./uploads'))
 app.use(static(path.join(__dirname, staticPath)));
 app.use(static('uploads'));
 
