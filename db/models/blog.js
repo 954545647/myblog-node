@@ -9,7 +9,17 @@ const BlogScheme = new Scheme({
     type: String,
     default: ''
   },
-  // 文章关键词
+  // 文章状态: 0代表草稿 1代表正式文章
+  state:{
+    type: Number,
+    default:0
+  },
+  // 文章标题 非草稿拥有属性
+  title:{
+    type:String,
+    default:''
+  },
+  // 文章关键词 非草稿拥有属性
   keyword:{
     type: Array,
     default:''
@@ -29,7 +39,6 @@ const BlogScheme = new Scheme({
   }
 },{
   collection:'blogList',
-  versionKey:false
 })
 
 module.exports = mongoose.model('blogList',BlogScheme);

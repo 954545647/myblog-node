@@ -42,23 +42,37 @@ router.post("/upload", upload.single("file"), async (ctx, next) => {
   };
 });
 
-// 获取博客
-router.get('/getBlog',async (ctx,next)=>{
-  let keyword = ctx.request.query.keyword
+router.get("/getAllBlog", async (ctx, next) => {
+  // 从数据库中查找博客类型为1的,即非草稿
+  let blog = await Blog.find({state:1});
+  if (blog) {
+    ctx.body = {
+      status: 200,
+      code: 0,
+      blog
+    };
+  } else {
+    ctx.body = {
+      status: 200,
+      code: 1, //数据库为空
+      blog: []
+    };
+  }
+});
+
+// 获取指定博客
+router.get("/getBlog", async (ctx, next) => {
+  let id = ctx.request.query.id;
   // 如果有关键词则返回指定博客
-  let blog
-  if(keyword){
-    blog = await Blog.find({keyword: keyword});
-  }else{
-    blog = await Blog.find()
-  }
-  ctx.body={
-    code:0,
-    status:200,
+  let blog;
+  blog = await Blog.find({ '_id': id });
+  ctx.body = {
+    code: 0,
+    status: 200,
     blog: blog
-  }
+  };
   // 如果没有关键词则返回全部博客
-})
+});
 
 // 保存博客
 router.post("/saveBlog", async (ctx, next) => {
@@ -71,14 +85,19 @@ router.post("/saveBlog", async (ctx, next) => {
   let time = `${year}-${month}-${date}`;
   let author = ctx.request.body.username;
   let keyword = ctx.request.body.keyword;
+  let state = ctx.request.body.state;
   let blog = new Blog({
     author: author ? author : "rex",
     keyword: keyword ? keyword : ["前端"],
     data: time,
     OriginalContent: value,
-    HtmlContent: render
+    HtmlContent: render,
+    state: state? state: 0
   });
   blog.save();
-  ctx.body = 666;
+  ctx.body = {
+    status:200,
+    blog
+  }
 });
 module.exports = router;
