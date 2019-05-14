@@ -19,6 +19,11 @@ const BlogScheme = new Scheme({
     type:String,
     default:''
   },
+  // 博客的简介
+  desc:{
+    type: String,
+    default:''
+  },
   // 文章关键词 非草稿拥有属性
   keyword:{
     type: Array,

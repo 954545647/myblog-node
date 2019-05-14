@@ -78,23 +78,29 @@ router.get("/getBlog", async (ctx, next) => {
 router.post("/saveBlog", async (ctx, next) => {
   let value = ctx.request.body.value; //markdown语法数据
   let render = ctx.request.body.render; //转换为html语法数据
-  let currentTime = new Date();
+  let author = ctx.request.body.username; //作者名字
+  let keyword = ctx.request.body.keyword; //关键词
+  let state = ctx.request.body.state; //博客状态
+  let title = ctx.request.body.title; //博客标题
+  let desc = ctx.request.body.desc;   //博客简介
+  let currentTime = new Date();       //博客创建时间
   let year = currentTime.getFullYear();
   let month = String(currentTime.getMonth() + 1).padStart(2, "0");
   let date = String(currentTime.getDate()).padStart(2, "0");
   let time = `${year}-${month}-${date}`;
-  let author = ctx.request.body.username;
-  let keyword = ctx.request.body.keyword;
-  let state = ctx.request.body.state;
+  console.log(keyword)
   let blog = new Blog({
-    author: author ? author : "rex",
-    keyword: keyword ? keyword : ["前端"],
+    author: author ? author : "匿名",
+    keyword: keyword ? keyword : ["学习"],
     data: time,
     OriginalContent: value,
     HtmlContent: render,
-    state: state? state: 0
+    state: state? state: 0,
+    title: title? title: '无题',
+    desc: desc? desc : '博客详情点击查看'
   });
   blog.save();
+  console.log(blog)
   ctx.body = {
     status:200,
     blog
