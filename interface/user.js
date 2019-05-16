@@ -17,7 +17,6 @@ const Redis = require("ioredis");
 const redis = new Redis(Config.redisConf);
 
 //art-template模版引擎
-const fs = require("fs");
 const path = require("path");
 const render = require("koa-art-template");
 var template = require("art-template");
@@ -47,7 +46,6 @@ function getCode() {
 router.post("/sendEmail", async ctx => {
   userMail = ctx.request.body.email; //用户的邮箱
   let code = getCode();
-  let result,resultCode;
   console.log("验证码是", code);
   // 把验证码保存到redis中去
   redis.set(userMail, code);
@@ -148,6 +146,7 @@ router.post("/register", async ctx => {
 
 // 登录路由
 router.post("/login", async ctx => {
+  ctx.session.user = 'rex';
   let email = ctx.request.body.email;
   let password = ctx.request.body.password;
   let dbUser = await User.findOne({ email: email });

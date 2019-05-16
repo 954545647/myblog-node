@@ -3,7 +3,25 @@ const app = new Koa(); //实例化koa
 const router = require("koa-router")(); //实例化koa路由
 
 const cors = require("koa2-cors"); //解决跨域
-app.use(cors());
+// app.use(
+//   cors({
+//     origin: ['http://192.168.194.1:8080'],
+//     credentials: true
+//   })
+// );
+app.use(cors({
+  origin: function (ctx) {
+      if (ctx.url === '/') {
+          return false;
+      }
+      return ' http://localhost:8080';
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
 
 const bodyParser = require("koa-bodyparser"); //解析post请求数据
 app.use(bodyParser());
@@ -11,22 +29,22 @@ app.use(bodyParser());
 // 配置静态资源服务器
 const path = require("path");
 const static = require("koa-static");
-const staticPath = './uploads'
+const staticPath = "./uploads";
 app.use(static(path.join(__dirname, staticPath)));
-app.use(static('uploads'));
+app.use(static("uploads"));
 
 const user = require("./interface/user.js"); //用户路由
 const home = require("./interface/home.js"); // 首页路由
 const blog = require("./interface/blog.js"); // 首页路由
-const render = require("koa-art-template"); // art-template模版引擎
+// const render = require("koa-art-template"); // art-template模版引擎
 
 const CONFIG = require("./config/session.js"); // session的默认配置
-var session = require("koa-generic-session"); // 这个是帮助koa解析cookie
+var session = require("koa-session"); // 这个是帮助koa解析cookie
 app.keys = ["some secret hurr"];
-
 app.use(session(CONFIG, app));
+
 const mongoose = require("mongoose"); // 引用mongoose数据库
-const User = require("./db/models/user.js");
+// const User = require("./db/models/user.js");
 const Config = require("./config/config.js");
 mongoose.connect(
   Config.dbs,
@@ -45,10 +63,14 @@ const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
 router.get("/", async ctx => {
+  ctx.session.a = 'a'
   ctx.body = "这是首页";
 });
+
 router.get("/user", async ctx => {
-  ctx.body = "这是user";
+  console.log(ctx.session.a)
+  console.log(ctx.session.username)
+  ctx.body = "这是用户";
 });
 
 app.use(user.routes()).use(user.allowedMethods()); //用户路由

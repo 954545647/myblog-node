@@ -1,6 +1,6 @@
 const config = {
   key: "koa:sess", //默认
-  maxAge: 600, //过期时间
+  maxAge: 600000, //过期时间
   autoCommit: true, //默认true
   overwrite: true, //覆盖
   httpOnly: true, //true表示只有服务器端可以访问

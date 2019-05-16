@@ -8,10 +8,12 @@ const axios = require("axios");
 //解析post请求数据
 const bodyParser = require("koa-bodyparser");
 app.use(bodyParser());
+
 router.prefix("/home");
 
 // 获取音乐数据接口(music.json文件)
 router.get("/music", async ctx => {
+  ctx.session.username = 'rex';
   try {
     let result;
     // 发起请求,去获取json文件的地址

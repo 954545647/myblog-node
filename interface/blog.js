@@ -15,6 +15,11 @@ app.use(bodyParser());
 // 配置mongodb数据库
 const Blog = require("./../db/models/blog.js");
 
+const CONFIG = require("./../config/session.js"); // session的默认配置
+var session = require("koa-session"); // 这个是帮助koa解析cookie
+app.keys = ["some secret hurr"];
+app.use(session(CONFIG, app));
+
 // 处理koa文件上传模块
 const multer = require("koa-multer");
 var storage = multer.diskStorage({
@@ -35,7 +40,6 @@ var upload = multer({
 
 router.post("/upload", upload.single("file"), async (ctx, next) => {
   let file = ctx.req.file;
-  console.log(config.imgUrl + "/" + ctx.req.file.filename);
   ctx.body = {
     filename: file.filename,
     url: config.imgUrl + "/" + ctx.req.file.filename
@@ -43,6 +47,7 @@ router.post("/upload", upload.single("file"), async (ctx, next) => {
 });
 
 router.get("/getAllBlog", async (ctx, next) => {
+  console.log(ctx.session.username);
   // 从数据库中查找博客类型为1的,即非草稿
   let blog = await Blog.find({state:1});
   if (blog) {
@@ -71,7 +76,6 @@ router.get("/getBlog", async (ctx, next) => {
     status: 200,
     blog: blog
   };
-  // 如果没有关键词则返回全部博客
 });
 
 // 保存博客
@@ -88,7 +92,6 @@ router.post("/saveBlog", async (ctx, next) => {
   let month = String(currentTime.getMonth() + 1).padStart(2, "0");
   let date = String(currentTime.getDate()).padStart(2, "0");
   let time = `${year}-${month}-${date}`;
-  console.log(keyword)
   let blog = new Blog({
     author: author ? author : "匿名",
     keyword: keyword ? keyword : ["学习"],
@@ -100,10 +103,10 @@ router.post("/saveBlog", async (ctx, next) => {
     desc: desc? desc : '博客详情点击查看'
   });
   blog.save();
-  console.log(blog)
   ctx.body = {
     status:200,
     blog
   }
 });
+
 module.exports = router;
