@@ -55,7 +55,6 @@ const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
-      console.log(ctx.header.origin)
       if(whiteUrl.includes(ctx.header.origin)){
         return ctx.header.origin
       }else{

@@ -49,7 +49,8 @@ router.post("/sendEmail", async ctx => {
   console.log("验证码是", code);
   // 把验证码保存到redis中去
   redis.set(userMail, code);
-  redis.expire(userMail, 600);
+  // 设置验证码的过期时间为90s;
+  redis.expire(userMail, 90);
   const html = template(filePath, {
     code
   });
@@ -119,7 +120,7 @@ router.post("/register", async ctx => {
   if (!num) {
     ctx.body = {
       code: 1,
-      result: "验证码已过期,请重新尝试"
+      result: "验证码已过期,请重新获取"
     };
     return;
   }
@@ -131,7 +132,7 @@ router.post("/register", async ctx => {
     user.save();
     ctx.body = {
       code: 0,
-      result: "验证通过"
+      result: "注册成功"
     };
     return;
   }
