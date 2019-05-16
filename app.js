@@ -40,29 +40,34 @@ mongoose.connect(
   }
 );
 
-
 const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
 // 白名单
 const whiteUrl = [
-  'http://localhost:8080',
-  'http://127.0.0.1:8080',
-  'http://www.xuhaojia.cn'
-]
+  "http://localhost:8080",
+  "http://127.0.0.1:8080",
+  "http://www.xuhaojia.cn"
+];
 // 解决跨域问题
 const cors = require("koa2-cors");
-app.use(cors({
-  origin:function(ctx){
-    return ctx.header.origin
-  },
-  // origin: [`${Config.whiteUrl}`],
-  // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}));
+app.use(
+  cors({
+    origin: function(ctx) {
+      if (ctx.header.origin === "http://47.105.52.134") {
+        return "http://www.xuhaojia.cn";
+      } else {
+        return ctx.header.origin;
+      }
+    },
+    // origin: [`${Config.whiteUrl}`],
+    // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    maxAge: 5,
+    credentials: true,
+    allowMethods: ["GET", "POST", "DELETE"],
+    allowHeaders: ["Content-Type", "Authorization", "Accept"]
+  })
+);
 
 router.get("/", async ctx => {
   ctx.body = "这是首页";
