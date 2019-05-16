@@ -13,7 +13,7 @@ router.prefix("/home");
 
 // 获取音乐数据接口(music.json文件)
 router.get("/music", async ctx => {
-  ctx.session.username = 'rex';
+  ctx.cookies.set('token',Math.random()); 
   try {
     let result;
     // 发起请求,去获取json文件的地址
@@ -21,12 +21,14 @@ router.get("/music", async ctx => {
       result = res.data;
     });
     ctx.body = {
+      code: 0,
       status: 200,
       result
     };
   } catch (error) {
     ctx.body = {
-      code: 1
+      code: 1,
+      result:'服务器数据请求错误'
     };
   }
 });
@@ -34,6 +36,7 @@ router.get("/music", async ctx => {
 // 获取歌词接口
 router.get("/getLyric", async ctx => {
   // 服务器上的歌词链接组成的数组
+  console.log(ctx.cookies.get('token'));
   let lyricList = ctx.request.query["lyric[]"];
   let lyricData = [];
   let times = []; // 歌词的时间

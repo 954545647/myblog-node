@@ -49,7 +49,7 @@ router.post("/sendEmail", async ctx => {
   console.log("验证码是", code);
   // 把验证码保存到redis中去
   redis.set(userMail, code);
-  redis.expire(userMail,600);
+  redis.expire(userMail, 600);
   const html = template(filePath, {
     code
   });
@@ -76,20 +76,20 @@ router.post("/sendEmail", async ctx => {
   };
 
   // send mail with defined transport object
-    try {
-      await transporter.sendMail(mailOptions);
-      ctx.body = {
-        code: 0,
-        result:'发送成功'
-      };
-      return
-    } catch (error) {
-      ctx.body = {
-        code:1,
-        result: '邮箱不存在'
-      };
-      return
-    }
+  try {
+    await transporter.sendMail(mailOptions);
+    ctx.body = {
+      code: 0,
+      result: "发送成功"
+    };
+    return;
+  } catch (error) {
+    ctx.body = {
+      code: 1,
+      result: "邮箱不存在"
+    };
+    return;
+  }
 });
 
 // 注册路由
@@ -146,7 +146,6 @@ router.post("/register", async ctx => {
 
 // 登录路由
 router.post("/login", async ctx => {
-  ctx.session.user = 'rex';
   let email = ctx.request.body.email;
   let password = ctx.request.body.password;
   let dbUser = await User.findOne({ email: email });
@@ -161,8 +160,10 @@ router.post("/login", async ctx => {
   // 如果输入的数据库的密码相同
   if (dbUser.password === password) {
     ctx.body = {
+      status: 200,
       code: 0,
-      result: "登录成功"
+      result: "登录成功",
+      token: Math.random()
     };
     return;
   } else {

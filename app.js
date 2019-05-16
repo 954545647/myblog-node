@@ -2,27 +2,6 @@ const Koa = require("koa");
 const app = new Koa(); //实例化koa
 const router = require("koa-router")(); //实例化koa路由
 
-const cors = require("koa2-cors"); //解决跨域
-// app.use(
-//   cors({
-//     origin: ['http://192.168.194.1:8080'],
-//     credentials: true
-//   })
-// );
-app.use(cors({
-  origin: function (ctx) {
-      if (ctx.url === '/') {
-          return false;
-      }
-      return ' http://localhost:8080';
-  },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
-  maxAge: 5,
-  credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
-}));
-
 const bodyParser = require("koa-bodyparser"); //解析post请求数据
 app.use(bodyParser());
 
@@ -46,6 +25,7 @@ app.use(session(CONFIG, app));
 const mongoose = require("mongoose"); // 引用mongoose数据库
 // const User = require("./db/models/user.js");
 const Config = require("./config/config.js");
+
 mongoose.connect(
   Config.dbs,
   {
@@ -59,17 +39,29 @@ mongoose.connect(
     }
   }
 );
+
+
 const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
+// 解决跨域问题
+const cors = require("koa2-cors");
+// http://localhost:8080
+// http://127.0.0.1:8080
+app.use(cors({
+  origin: [`${Config.whiteUrl}`],
+  // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}));
+
 router.get("/", async ctx => {
-  ctx.session.a = 'a'
   ctx.body = "这是首页";
 });
 
 router.get("/user", async ctx => {
-  console.log(ctx.session.a)
-  console.log(ctx.session.username)
   ctx.body = "这是用户";
 });
 

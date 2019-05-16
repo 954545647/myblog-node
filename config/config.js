@@ -7,11 +7,13 @@ if (env === "dev") {
   dbs = "mongodb://127.0.0.1:27017/blog";
   redisUrl = '127.0.0.1';
   musicData = 'http://47.105.52.134:80';
+  whiteUrl = 'http://127.0.0.1:8080';
   imgUrl = 'http://127.0.0.1:3000';
 } else if (env === "prod") {
   dbs = "mongodb://47.105.52.134:27017/blog";
   redisUrl = '47.105.52.134';
   musicData = 'http://47.105.52.134:80';
+  whiteUrl = 'http://47.105.52.134';
   imgUrl = 'http://47.105.52.134:3000';
 }
 let redisConf = {
@@ -26,5 +28,6 @@ module.exports = {
   redisUrl,
   redisConf,
   musicData,
+  whiteUrl,
   imgUrl
 };

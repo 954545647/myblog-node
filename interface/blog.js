@@ -15,10 +15,10 @@ app.use(bodyParser());
 // 配置mongodb数据库
 const Blog = require("./../db/models/blog.js");
 
-const CONFIG = require("./../config/session.js"); // session的默认配置
-var session = require("koa-session"); // 这个是帮助koa解析cookie
-app.keys = ["some secret hurr"];
-app.use(session(CONFIG, app));
+// const CONFIG = require("./../config/session.js"); // session的默认配置
+// var session = require("koa-session"); // 这个是帮助koa解析cookie
+// app.keys = ["some secret hurr"];
+// app.use(session(CONFIG, app));
 
 // 处理koa文件上传模块
 const multer = require("koa-multer");
@@ -47,9 +47,8 @@ router.post("/upload", upload.single("file"), async (ctx, next) => {
 });
 
 router.get("/getAllBlog", async (ctx, next) => {
-  console.log(ctx.session.username);
   // 从数据库中查找博客类型为1的,即非草稿
-  let blog = await Blog.find({state:1});
+  let blog = await Blog.find({ state: 1 });
   if (blog) {
     ctx.body = {
       status: 200,
@@ -70,7 +69,7 @@ router.get("/getBlog", async (ctx, next) => {
   let id = ctx.request.query.id;
   // 如果有关键词则返回指定博客
   let blog;
-  blog = await Blog.find({ '_id': id });
+  blog = await Blog.find({ _id: id });
   ctx.body = {
     code: 0,
     status: 200,
@@ -86,8 +85,8 @@ router.post("/saveBlog", async (ctx, next) => {
   let keyword = ctx.request.body.keyword; //关键词
   let state = ctx.request.body.state; //博客状态
   let title = ctx.request.body.title; //博客标题
-  let desc = ctx.request.body.desc;   //博客简介
-  let currentTime = new Date();       //博客创建时间
+  let desc = ctx.request.body.desc; //博客简介
+  let currentTime = new Date(); //博客创建时间
   let year = currentTime.getFullYear();
   let month = String(currentTime.getMonth() + 1).padStart(2, "0");
   let date = String(currentTime.getDate()).padStart(2, "0");
@@ -98,15 +97,15 @@ router.post("/saveBlog", async (ctx, next) => {
     data: time,
     OriginalContent: value,
     HtmlContent: render,
-    state: state? state: 0,
-    title: title? title: '无题',
-    desc: desc? desc : '博客详情点击查看'
+    state: state ? state : 0,
+    title: title ? title : "无题",
+    desc: desc ? desc : "博客详情点击查看"
   });
   blog.save();
   ctx.body = {
-    status:200,
+    status: 200,
     blog
-  }
+  };
 });
 
 module.exports = router;

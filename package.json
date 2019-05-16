@@ -20,6 +20,7 @@
     "art-template": "^4.13.2",
     "axios": "^0.18.0",
     "ioredis": "^4.9.0",
+    "js-cookie": "^2.2.0",
     "koa-art-template": "^1.1.1",
     "koa-generic-session": "^2.0.1",
     "koa-redis": "^3.1.3",
