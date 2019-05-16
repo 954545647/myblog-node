@@ -48,12 +48,13 @@ const whiteUrl = [
   "http://localhost:8080",
   "http://127.0.0.1:8080",
 ];
-const myUrl = 'http://47.105.52.134:80';
+const myUrl = 'http://47.105.52.134';
 // 解决跨域问题
 const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
+      console.log(ctx.header.origin)
       if(whiteUrl.includes(ctx.header.origin)){
         return ctx.header.origin
       }else{
