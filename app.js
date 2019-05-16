@@ -44,12 +44,19 @@ mongoose.connect(
 const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
+// 白名单
+const whiteUrl = [
+  'http://localhost:8080',
+  'http://127.0.0.1:8080',
+  'http://www.xuhaojia.cn'
+]
 // 解决跨域问题
 const cors = require("koa2-cors");
-// http://localhost:8080
-// http://127.0.0.1:8080
 app.use(cors({
-  origin: [`${Config.whiteUrl}`],
+  origin:function(ctx){
+    return ctx.header.origin
+  },
+  // origin: [`${Config.whiteUrl}`],
   // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,
   credentials: true,
