@@ -48,26 +48,17 @@ const whiteUrl = [
   "http://localhost:8080",
   "http://127.0.0.1:8080",
 ];
-const myUrl = 'http://www.xuhaojia.cn';
+const myUrl = 'http://47.105.52.134:80';
 // 解决跨域问题
 const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
-      console.log(ctx.header)
-      console.log(ctx.header.origin)
-      console.log(ctx.header.origin == "http://47.105.52.134")
-      console.log(whiteUrl.includes(ctx.header.origin))
       if(whiteUrl.includes(ctx.header.origin)){
         return ctx.header.origin
       }else{
         return myUrl
       }
-      // if (ctx.header.origin == "http://47.105.52.134") {
-      //   return "http://www.xuhaojia.cn";
-      // } else {
-      //   return ctx.header.origin;
-      // }
     },
     // origin: [`${Config.whiteUrl}`],
     // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
