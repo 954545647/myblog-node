@@ -47,8 +47,9 @@ const redis = new Redis(Config.redisConf);
 const whiteUrl = [
   "http://localhost:8080",
   "http://127.0.0.1:8080",
+  'http://47.105.52.134',
 ];
-const myUrl = 'http://47.105.52.134';
+const myUrl = 'http://www.xuhaojia.cn';
 // 解决跨域问题
 const cors = require("koa2-cors");
 app.use(
