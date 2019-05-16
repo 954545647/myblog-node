@@ -54,6 +54,7 @@ const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
+      console.log(ctx.header)
       console.log(ctx.header.origin)
       console.log(ctx.header.origin == "http://47.105.52.134")
       if (ctx.header.origin == "http://47.105.52.134") {
