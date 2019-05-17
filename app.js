@@ -57,13 +57,14 @@ const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
-      if (whiteUrl.includes(ctx.header.origin)) {
-        return ctx.header.origin;
-      } else {
-        return myUrl;
-      }
+      // if (whiteUrl.includes(ctx.header.origin)) {
+      //   return ctx.header.origin;
+      // } else {
+      //   return myUrl;
+      // }
+      console.log(ctx.header.origin,'6666');
+      return ctx.header.origin;
     },
-    // origin: [`${Config.whiteUrl}`],
     // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
