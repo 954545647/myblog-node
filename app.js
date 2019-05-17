@@ -62,8 +62,14 @@ app.use(
       // } else {
       //   return myUrl;
       // }
-      console.log(ctx.header.origin,'6666');
-      return ctx.header.origin;
+      console.log(ctx.header.origin, "6666");
+      if (ctx.header.origin == myUrl) {
+        let domain = "www.xuhaojia.cn";
+        console.log(domain)
+        return domain;
+      } else {
+        return ctx.header.origin;
+      }
     },
     // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
