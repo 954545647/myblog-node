@@ -64,7 +64,7 @@ app.use(
       // }
       console.log(ctx.header.origin, "6666");
       if (ctx.header.origin == myUrl) {
-        let domain = "www.xuhaojia.cn";
+        let domain = "http://www.xuhaojia.cn";
         console.log(domain)
         return domain;
       } else {
