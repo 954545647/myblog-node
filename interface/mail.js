@@ -17,9 +17,6 @@ let mailOptions = {
   from: '"认证邮件" <954545647@qq.com>', // sender address
   to: '954545647@qq.com', // list of receivers
   subject: 'Hello', // Subject line
-  // 发送text或者html格式
-  // text: 'Hello world?', // plain text body
-  // html: '<b>Hello world?</b>' // html body
   html: fs.createReadStream(path.resolve(__dirname, 'email.html')) 
 };
 

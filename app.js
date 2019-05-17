@@ -13,7 +13,7 @@ app.use(static(path.join(__dirname, staticPath)));
 app.use(static("uploads"));
 
 const user = require("./interface/user.js"); //用户路由
-const home = require("./interface/home.js"); // 首页路由
+const music = require("./interface/music.js"); // 首页路由
 const blog = require("./interface/blog.js"); // 首页路由
 // const render = require("koa-art-template"); // art-template模版引擎
 
@@ -46,19 +46,21 @@ const redis = new Redis(Config.redisConf);
 // 白名单
 const whiteUrl = [
   "http://localhost:8080",
+  "http://localhost:8081",
   "http://127.0.0.1:8080",
-  'http://47.105.52.134',
+  "http://127.0.0.1:8081",
+  "http://47.105.52.134"
 ];
-const myUrl = 'http://www.xuhaojia.cn';
+const myUrl = "http://www.xuhaojia.cn";
 // 解决跨域问题
 const cors = require("koa2-cors");
 app.use(
   cors({
     origin: function(ctx) {
-      if(whiteUrl.includes(ctx.header.origin)){
-        return ctx.header.origin
-      }else{
-        return myUrl
+      if (whiteUrl.includes(ctx.header.origin)) {
+        return ctx.header.origin;
+      } else {
+        return myUrl;
       }
     },
     // origin: [`${Config.whiteUrl}`],
@@ -74,12 +76,23 @@ router.get("/", async ctx => {
   ctx.body = "这是首页";
 });
 
-router.get("/user", async ctx => {
-  ctx.body = "这是用户";
+router.get("/ifLogin", async ctx => {
+  // 954545647@qq.com  登录验证成功之后 ctx.sessionId = "954545647@qq.com"保存的
+  if (ctx.session.sessionId) {
+    ctx.body = {
+      status: 200,
+      code: 0
+    };
+  } else {
+    ctx.body = {
+      status: 302,
+      code: 1
+    };
+  }
 });
 
 app.use(user.routes()).use(user.allowedMethods()); //用户路由
-app.use(home.routes()).use(home.allowedMethods()); //首页路由
+app.use(music.routes()).use(music.allowedMethods()); //首页路由
 app.use(blog.routes()).use(blog.allowedMethods()); //博客路由
 app
   .use(router.routes()) // 启动路由

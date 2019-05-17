@@ -3,17 +3,16 @@
 const Koa = require("koa");
 const app = new Koa();
 const router = require("koa-router")();
-const Config = require("./../config/config.js"); //配置文件信息
+const Config = require("../config/config.js"); //配置文件信息
 const axios = require("axios");
 //解析post请求数据
 const bodyParser = require("koa-bodyparser");
 app.use(bodyParser());
 
-router.prefix("/home");
+router.prefix("/music");
 
 // 获取音乐数据接口(music.json文件)
-router.get("/music", async ctx => {
-  ctx.cookies.set('token',Math.random()); 
+router.get("/getMusicDate", async ctx => {
   try {
     let result;
     // 发起请求,去获取json文件的地址
@@ -36,7 +35,6 @@ router.get("/music", async ctx => {
 // 获取歌词接口
 router.get("/getLyric", async ctx => {
   // 服务器上的歌词链接组成的数组
-  console.log(ctx.cookies.get('token'));
   let lyricList = ctx.request.query["lyric[]"];
   let lyricData = [];
   let times = []; // 歌词的时间

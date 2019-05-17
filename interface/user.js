@@ -158,13 +158,15 @@ router.post("/login", async ctx => {
     };
     return;
   }
-  // 如果输入的数据库的密码相同
+  // 验证通过
   if (dbUser.password === password) {
+    // 如果用户验证通过,通过session去保存一个sessionId,
+    // 此sessionId需要唯一标识用户,使用用户的邮箱
+    ctx.session.sessionId = email;
     ctx.body = {
       status: 200,
       code: 0,
       result: "登录成功",
-      token: Math.random()
     };
     return;
   } else {
