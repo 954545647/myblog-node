@@ -43,6 +43,15 @@ mongoose.connect(
 const Redis = require("ioredis"); // 连接redis
 const redis = new Redis(Config.redisConf);
 
+// app.use(async (ctx, next) => {
+//   console.log(ctx.header.origin)
+//   ctx.set('Access-Control-Allow-Origin', ctx.headers.origin); 
+//   ctx.set('Access-Control-Allow-Headers', 'content-type');
+//   ctx.set('Access-Control-Allow-Methods', 'OPTIONS,GET,HEAD,PUT,POST,DELETE,PATCH')
+//   ctx.set("Access-Control-Allow-Credentials", "true");
+//   await next();
+// });
+
 // 白名单
 const whiteUrl = [
   "http://localhost:8080",
@@ -62,23 +71,22 @@ app.use(
       // } else {
       //   return myUrl;
       // }
-      console.log(ctx.header.origin, "6666");
-      if (ctx.header.origin == myUrl) {
-        let domain = "http://www.xuhaojia.cn";
-        console.log(domain)
-        return domain;
-      } else {
-        return ctx.header.origin;
-      }
+      return ctx.header.origin;
     },
-    // exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
     maxAge: 5,
     credentials: true,
-    allowMethods: ["GET", "POST", "DELETE"],
-    allowHeaders: ["Content-Type", "Authorization", "Accept"]
+    allowMethods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
   })
 );
-
+app.use(async (ctx,next)=>{
+  // 如果是直接url输入的话
+  if(!ctx.session.sessionId){
+    
+  }
+  await next();
+})
 router.get("/", async ctx => {
   ctx.body = "这是首页";
 });

@@ -163,18 +163,28 @@ router.post("/login", async ctx => {
     // 如果用户验证通过,通过session去保存一个sessionId,
     // 此sessionId需要唯一标识用户,使用用户的邮箱
     ctx.session.sessionId = email;
-    ctx.body = {
+    ctx.status = 200;
+    return (ctx.body = {
       status: 200,
       code: 0,
-      result: "登录成功",
-    };
-    return;
+      result: "登录成功"
+    });
   } else {
     ctx.body = {
       code: 1,
       result: "密码错误,请重新输入"
     };
     return;
+  }
+});
+
+router.get("/logout", async (ctx, next) => {
+  // 清空sessionId
+  ctx.session.sessionId = '';
+  ctx.body={
+    code:ctx.session.sessionId,
+    status:200,
+    code:0,
   }
 });
 module.exports = router;
