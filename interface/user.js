@@ -164,7 +164,7 @@ router.post("/login", async ctx => {
     // 此sessionId需要唯一标识用户,使用用户的邮箱
     ctx.session.sessionId = email;
     ctx.status = 200;
-    return (ctx.body = {
+     (ctx.body = {
       status: 200,
       code: 0,
       result: "登录成功"
@@ -178,6 +178,7 @@ router.post("/login", async ctx => {
   }
 });
 
+// 登出
 router.get("/logout", async (ctx, next) => {
   // 清空sessionId
   ctx.session.sessionId = '';

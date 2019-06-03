@@ -37,7 +37,7 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage
 });
-
+// 上传图片配置
 router.post("/upload", upload.single("file"), async (ctx, next) => {
   let file = ctx.req.file;
   ctx.body = {
@@ -49,20 +49,27 @@ router.post("/upload", upload.single("file"), async (ctx, next) => {
 router.get("/getAllBlog", async (ctx, next) => {
   // 从数据库中查找博客类型为1的,即非草稿
   let blog = await Blog.find({ state: 1 });
+  let blogTitles = [];
+  blog.forEach((item)=>{
+    blogTitles.push(item.title)
+  })
   if (blog) {
     ctx.body = {
       status: 200,
       code: 0,
-      blog
+      blog,
+      blogTitles
     };
   } else {
     ctx.body = {
       status: 200,
       code: 1, //数据库为空
-      blog: []
+      blog: [],
+      blogTitles:[]
     };
   }
 });
+
 
 // 获取指定博客
 router.get("/getBlog", async (ctx, next) => {

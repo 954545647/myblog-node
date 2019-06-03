@@ -53,14 +53,14 @@ const redis = new Redis(Config.redisConf);
 // });
 
 // 白名单
-const whiteUrl = [
-  "http://localhost:8080",
-  "http://localhost:8081",
-  "http://127.0.0.1:8080",
-  "http://127.0.0.1:8081",
-  "http://47.105.52.134"
-];
-const myUrl = "http://www.xuhaojia.cn";
+// const whiteUrl = [
+//   "http://localhost:8080",
+//   "http://localhost:8081",
+//   "http://127.0.0.1:8080",
+//   "http://127.0.0.1:8081",
+//   "http://47.105.52.134"
+// ];
+// const myUrl = "http://www.xuhaojia.cn";
 // 解决跨域问题
 const cors = require("koa2-cors");
 app.use(
@@ -80,19 +80,18 @@ app.use(
     allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
   })
 );
-app.use(async (ctx,next)=>{
-  // 如果是直接url输入的话
-  if(!ctx.session.sessionId){
-    
-  }
-  await next();
-})
+// app.use(async (ctx,next)=>{
+//   // 如果是直接url输入的话
+//   if(!ctx.session.sessionId){
+//   }
+//   await next();
+// })
+
 router.get("/", async ctx => {
   ctx.body = "这是首页";
 });
 
 router.get("/ifLogin", async ctx => {
-  // 954545647@qq.com  登录验证成功之后 ctx.sessionId = "954545647@qq.com"保存的
   if (ctx.session.sessionId) {
     ctx.body = {
       status: 200,
