@@ -37,6 +37,9 @@ var storage = multer.diskStorage({
 var upload = multer({
   storage: storage
 });
+
+
+
 // 上传图片配置
 router.post("/upload", upload.single("file"), async (ctx, next) => {
   let file = ctx.req.file;

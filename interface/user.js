@@ -99,6 +99,11 @@ router.post("/register", async ctx => {
   let number = ctx.request.body.code; // 用户填写的验证码
   let email = ctx.request.body.email; // 用户的邮箱 用来判断用户是否已经存在
   let password = ctx.request.body.pass; // 用户的密码
+  let username = Math.random()
+    .toString(36)
+    .slice(-6);
+  console.log(username);
+  let role = 0; //用户权限
   // 要先判断用户是否已经存在了
   // 查询数据库中email字段值为传入email的数据 find是一个数组,findOne返回一个对象
   let dbUserList = await User.find({ email: email });
@@ -126,8 +131,10 @@ router.post("/register", async ctx => {
   }
   if (number == num) {
     let user = new User({
+      username,
       email,
-      password
+      password,
+      role
     });
     user.save();
     ctx.body = {
@@ -164,14 +171,15 @@ router.post("/login", async ctx => {
     // 此sessionId需要唯一标识用户,使用用户的邮箱
     ctx.session.sessionId = email;
     ctx.status = 200;
-     (ctx.body = {
+    ctx.body = {
       status: 200,
       code: 0,
-      result: "登录成功"
-    });
+      result: "登录成功",
+      username: dbUser.username,
+    };
   } else {
     ctx.body = {
-      code: 1,
+      code: 2,
       result: "密码错误,请重新输入"
     };
     return;
@@ -181,11 +189,57 @@ router.post("/login", async ctx => {
 // 登出
 router.get("/logout", async (ctx, next) => {
   // 清空sessionId
-  ctx.session.sessionId = '';
-  ctx.body={
-    code:ctx.session.sessionId,
-    status:200,
-    code:0,
+  ctx.session.sessionId = "";
+  ctx.body = {
+    code: ctx.session.sessionId,
+    status: 200,
+    code: 0
+  };
+});
+
+// 根据用户权限得到对应路由权限
+router.post("/checkRule", async ctx => {
+  let email = ctx.request.body.email;
+  let userRole;
+  let username;
+  await User.findOne({ email: email }).then((res)=>{
+    userRole = res.role;
+    username = res.username;
+  });
+  let routes = [
+    {
+      name: "blog",
+      alias: "首页",
+      icon: "icon-wenzhang1",
+      clickName:'goToBlog',
+    },
+    {
+      name: "music",
+      alias: "听歌",
+      icon: "icon-erji",
+      clickName:'goToMusic',
+    },
+    {
+      name: "user",
+      alias: "个人中心",
+      icon: "icon-yonghu",
+      clickName:'goToPerson',
+    }
+  ];
+  if (userRole === 1) {
+    routes.splice(1, 0, {
+      name: "write",
+      alias: "写博客",
+      icon: "icon-shuben",
+      clickName:'goToWrite',
+    });
   }
+  ctx.body = {
+    code: 0,
+    status: 200,
+    userRole,
+    username,
+    routes
+  };
 });
 module.exports = router;

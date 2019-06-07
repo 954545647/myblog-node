@@ -16,6 +16,16 @@ const UserSchema = new Scheme({
   email:{
     type:String,
     require:true
+  },
+  // 用户权限
+  role:{
+    type:Number,
+    default:0
+  },
+  // 用户头像
+  cover:{
+    type:String,
+    default:''
   }
 },{
   //默认collection表名是model的第一个参数小写并加上s

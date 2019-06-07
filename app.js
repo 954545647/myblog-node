@@ -95,12 +95,13 @@ router.get("/ifLogin", async ctx => {
   if (ctx.session.sessionId) {
     ctx.body = {
       status: 200,
-      code: 0
+      code: 0,
+      sessionId:ctx.session.sessionId
     };
   } else {
     ctx.body = {
       status: 302,
-      code: 1
+      code: 1,
     };
   }
 });
