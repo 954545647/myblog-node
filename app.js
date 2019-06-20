@@ -102,6 +102,7 @@ router.get("/ifLogin", async ctx => {
     ctx.body = {
       status: 302,
       code: 1,
+      sessionId:0 //用户未登录
     };
   }
 });

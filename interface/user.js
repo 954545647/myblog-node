@@ -203,8 +203,10 @@ router.post("/checkRule", async ctx => {
   let userRole;
   let username;
   await User.findOne({ email: email }).then((res)=>{
-    userRole = res.role;
-    username = res.username;
+    if(res){
+      userRole = res.role;
+      username = res.username;
+    }
   });
   let routes = [
     {
