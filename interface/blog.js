@@ -20,7 +20,7 @@ const User = require("./../db/models/user.js");
 // app.keys = ["some secret hurr"];
 // app.use(session(CONFIG, app));
 
-// 处理koa文件上传模块
+// koa文件上传模块
 const multer = require("koa-multer");
 var storage = multer.diskStorage({
   //文件保存路径
