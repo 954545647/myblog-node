@@ -12,9 +12,9 @@ if (env === "dev") {
 } else if (env === "prod") {
   dbs = "mongodb://47.105.52.134:27017/blog";
   redisUrl = '47.105.52.134';
-  musicData = 'https://47.105.52.134:80';
-  whiteUrl = 'https://47.105.52.134';
-  imgUrl = 'https://47.105.52.134:3000';
+  musicData = 'http://47.105.52.134:80';
+  whiteUrl = 'http://47.105.52.134';
+  imgUrl = 'http://47.105.52.134:3000';
 }
 let redisConf = {
   host: redisUrl, //安装好的redis服务器地址
