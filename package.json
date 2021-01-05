@@ -18,7 +18,7 @@
   "homepage": "https://github.com/954545647/myblog-node#readme",
   "devDependencies": {
     "art-template": "^4.13.2",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "ioredis": "^4.9.0",
     "js-cookie": "^2.2.0",
     "koa-art-template": "^1.1.1",
